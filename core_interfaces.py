@@ -2,12 +2,16 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
 
+@dataclass
+class User:
+    user_id: int
+    login: str
+    password: str
+
 
 @dataclass
 class UserAccount:
     user_id: int
-    login: str
-    password: str
     balance: float = 0
     history: list = []
 
@@ -16,7 +20,11 @@ class IUsersRepository(ABC):
     '''Интерфейс для регистрации, авторизации и получения данных из кабинета пользователя'''
 
     @abstractmethod
-    def registration(self, login: str, password: str) -> UserAccount:
+    def registration(self, login: str, password: str) -> User:
+        pass
+
+    @abstractmethod
+    def create_account(self, user_id: int) -> UserAccount:
         pass
 
     @abstractmethod
@@ -28,7 +36,7 @@ class IUsersRepository(ABC):
         pass
 
 
-class IOperations(ABC):
+class IOperationsRepository(ABC):
     '''Интерфейс для выполнения операций по счету'''
 
     @abstractmethod
