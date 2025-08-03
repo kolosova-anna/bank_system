@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
@@ -11,40 +12,72 @@ class User:
 
 @dataclass
 class UserAccount:
+    account_id: int
     user_id: int
     balance: float = 0
-    history: list = []
+
+
+@dataclass
+class History:
+    op_id: int
+    user_id: int
+    date_time: str
+    op_name: str
+    sum: float
+
+
+class IUnitOfWork(ABC):
+    users_repo: IUsersRepository
+    ops_repo: IOperationsRepository
+
+    @abstractmethod
+    def __enter__(self) -> IUnitOfWork:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def rollback(self) -> None:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def commit(self) -> None:
+        raise NotImplementedError
 
 
 class IUsersRepository(ABC):
     '''Интерфейс для регистрации, авторизации и получения данных из кабинета пользователя'''
-
     @abstractmethod
-    def registration(self, login: str, password: str) -> User:
+    def registration(self, login: str, password: str) -> int | None:
         pass
 
     @abstractmethod
-    def create_account(self, user_id: int) -> UserAccount:
+    def create_account(self, user_id: int) -> int:
         pass
 
     @abstractmethod
-    def autorization(self, login: str, password: str) -> UserAccount:
+    def autorization(self, login: str, password: str) -> int | None:
         pass
 
     @abstractmethod
-    def get_user_by_id(self, user_id: int) -> UserAccount:
+    def check_user_availibility(self, login: str) -> bool:
+        pass
+
+    @abstractmethod
+    def check_new_password(self, password: str) -> bool:
         pass
 
 
 class IOperationsRepository(ABC):
     '''Интерфейс для выполнения операций по счету'''
-
     @abstractmethod
     def get_balance(self, user_id: int) -> float:
         pass
 
     @abstractmethod
-    def get_history(self, user_id: int) -> list:
+    def get_history(self, user_id: int) -> list | None:
         pass
 
     @abstractmethod
@@ -52,5 +85,17 @@ class IOperationsRepository(ABC):
         pass
 
     @abstractmethod
-    def up_user_balance(self, user_id: int, sum: int) -> None:
+    def deposit_cash(self, user_id: int, sum: int) -> None:
         pass
+
+    @abstractmethod
+    def record_changes(self, user_id: int, operation: str, sum: int) -> None:
+        pass
+
+    @abstractmethod
+    def show_all_records(self, table: str) -> list | None:
+        pass
+
+''' @abstractmethod
+    def delete_record(self) -> None:
+        pass'''
