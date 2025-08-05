@@ -1,4 +1,4 @@
-from core_services import User, UsersService, Operations
+from core_services import UsersService, Operations
 import pandas as pd
 
 

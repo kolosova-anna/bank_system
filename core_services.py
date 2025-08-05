@@ -1,5 +1,4 @@
-from __future__ import annotations
-from core_interfaces import User, IUsersRepository, IOperationsRepository, IUnitOfWork
+from core_interfaces import IUnitOfWork
 import re
 
 
@@ -98,10 +97,7 @@ class Operations:
     
     def show_all_records(self, table: str) -> list | None:
         return self.uow.ops_repo.show_all_records(table)
-    
-''' def delete_record(self) -> None:
-        return self.uow.ops_repo.delete_record()'''
-    
+       
 
 class BankException(Exception):
     def __init__(self, message):

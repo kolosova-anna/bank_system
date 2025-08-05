@@ -95,7 +95,3 @@ class IOperationsRepository(ABC):
     @abstractmethod
     def show_all_records(self, table: str) -> list | None:
         pass
-
-''' @abstractmethod
-    def delete_record(self) -> None:
-        pass'''

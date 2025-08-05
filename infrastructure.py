@@ -1,5 +1,5 @@
-from __future__ import annotations
-from core_interfaces import User, History, IUsersRepository, IOperationsRepository, IUnitOfWork
+from typing import Self
+from core_interfaces import IUsersRepository, IOperationsRepository, IUnitOfWork
 from core_services import BankException
 import sqlite3
 import re
@@ -36,7 +36,7 @@ class UnitOfWork(IUnitOfWork):
         self.users_repo = users
         self.ops_repo = ops
 
-    def __enter__(self) -> UnitOfWork:
+    def __enter__(self) -> Self:
         self.db.execute_query('BEGIN TRANSACTION')
         return self
     
@@ -178,7 +178,3 @@ class OpsRepo(IOperationsRepository):
     def show_all_records(self, table: str) -> list:
         query = f"SELECT * FROM {table}"
         return self.db.get_data(query)
-    
-''' def delete_record(self) -> None:
-        query = "DELETE FROM users WHERE user_id = 1"
-        self.db.execute_query(query)'''
