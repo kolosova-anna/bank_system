@@ -8,6 +8,7 @@ class BankScreen:
         self.ops = ops
 
     def run(self) -> None:
+        print('\nBank welcomes you!')
         self._show_menu_main()
         while True:
             choise = self._get_num()
@@ -29,6 +30,7 @@ class BankScreen:
                     print("The section with the entered number wasn't found")
 
     def _run_user_menu(self, user_id: int) -> None:
+        print('\n Dear client, you are logged in')
         self._show_user_menu()
         while True:
             choise = self._get_num()
@@ -98,14 +100,12 @@ class BankScreen:
         return user_id     
     
     def _show_menu_main(self) -> None:
-        print('\nBank welcomes you!')
         print('Select menu item you are interested in:')
         print('1. Sign up')
         print('2. Log in')
         print('0. Exit')
 
     def _show_user_menu(self) -> None:
-        print('\n Dear client, you are logged in')
         print('Select action:')
         print('1. Deposit cash')
         print('2. Withdraw cash')
